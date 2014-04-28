@@ -5,7 +5,8 @@ module VagrantPlugins
     module Util
       module VimHelpers
         def get_datacenter(connection, machine)
-          connection.serviceInstance.find_datacenter(machine.provider_config.data_center_name) or fail Errors::VSphereError, :message => I18n.t('vsphere.errors.missing_datacenter')
+          rootFolder = connection.serviceInstance.content.rootFolder
+          rootFolder.childEntity.grep(RbVmomi::VIM::Datacenter).find { |x| x.name == machine.provider_config.data_center_name } or fail Errors::VSphereError, :message => I18n.t('vsphere.errors.missing_datacenter')
         end
 
         def get_vm_by_uuid(connection, machine)
