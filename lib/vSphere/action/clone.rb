@@ -24,7 +24,7 @@ module VagrantPlugins
 
           raise Error::VSphereError, :message => I18n.t('vsphere.errors.missing_template') if template.nil?
 
-          begin
+          #begin
             location = get_location connection, machine, config
             spec = RbVmomi::VIM.VirtualMachineCloneSpec :location => location, :powerOn => true, :template => false
             customization_info = get_customization_spec_info_by_name connection, machine
@@ -36,10 +36,10 @@ module VagrantPlugins
             env[:ui].info " -- Name: #{name}"
 
             new_vm = template.CloneVM_Task(:folder => template.parent, :name => name, :spec => spec).wait_for_completion
-          rescue Exception => e
-            puts e.message
-            raise Errors::VSphereError, :message => e.message
-          end
+          #rescue Exception => e
+          #  puts e.message
+          #  raise Errors::VSphereError, :message => e.message
+          #end
 
           #TODO: handle interrupted status in the environment, should the vm be destroyed?
 
